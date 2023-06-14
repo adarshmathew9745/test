@@ -1,0 +1,290 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="menu_loan_form12" model="website.menu">
+        <field name="name">Loan</field>
+        <field name="url">/loan_webform</field>
+        <field name="parent_id" ref="website.main_menu"/>
+        <field name="sequence" type="int">0</field>
+    </record>
+    <data>
+        <template id="create_loan">
+            <t t-attf-href="/loan_request"/>
+            <t t-call="website.layout">
+                <div id="wrap" style="margin-bottom: 70px;">
+                    <div class="oe_structure">
+                        <div class="container">
+                            <form role="form" action="/webloan" methode="POST">
+                                <div class="form-group">
+                                    <label for="employee_id" class="control-label">Employee</label>
+                                    <select id="emp_name_list" name="employee_id" class="form-control link-style"
+                                            onchange="onchange_employee_fields()">
+                                        <t t-if="loans">
+                                            <t t-foreach="loans" t-as="loan">
+                                                <option selected="selected" t-esc="loan.employee_id.name"
+                                                        t-att-value="loan.id" readonly="readonly"/>
+                                            </t>
+                                        </t>
+                                        <t t-elif="data">
+                                            <option selected="selected" t-esc="data.name"
+                                                    t-att-value="data.id"/>
+                                        </t>
+                                        <t t-else="">
+                                            <t t-foreach="employee_rec" t-as="employee">
+                                                <option t-out="employee.name" t-att-value="employee.id"/>
+                                            </t>
+                                        </t>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="department_id" class="control-label">Department</label>
+                                    <select name="department_id" class="form-control link-style"
+                                            id="employee_department">
+                                        <t t-if="loans">
+                                            <t t-foreach="loans" t-as="loan">
+                                                <option selected="selected" t-esc="loan.department_id.name"
+                                                        t-att-value="loan.id" readonly="readonly"/>
+                                            </t>
+                                        </t>
+                                        <t t-elif="data">
+                                            <option selected="selected" t-esc="data.department_id.name"
+                                                    t-att-value="data.department_id.id"/>
+                                        </t>
+                                        <t t-else="">
+                                            <t t-foreach="department_rec" t-as="department">
+                                                <option t-out="department.name" t-att-value="department.id"/>
+                                            </t>
+                                        </t>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="loan_name" class="control-label">Loan Amount</label>
+                                    <t t-if="loans">
+                                        <t t-foreach="loans" t-as="loan">
+                                            <input type="text" name="loan_amount" t-att-value="loan.loan_amount"
+                                                   id="loan_amount" onchange="onchange_loan_amount()"
+                                                   class="form-control" placeholder="Amount"/>
+                                        </t>
+                                    </t>
+                                    <t t-elif="data">
+                                        <input type="text" name="loan_amount" t-att-value="loan_amount" id="loan_amount"
+                                               class="form-control" placeholder="Amount" required="required"
+                                               onchange="onchange_loan_amount()"/>
+                                    </t>
+                                    <t t-else="">
+                                        <input type="text" name="loan_amount" t-att-value="loan_amount" id="loan_amount"
+                                               class="form-control" placeholder="Amount" required="required"
+                                               onchange="onchange_loan_amount()"/>
+                                    </t>
+                                </div>
+                                <div class="form-group">
+                                    <label for="payment_start_date" class="control-label">Payment Start Date</label>
+                                    <t t-if="loans">
+                                        <t t-foreach="loans" t-as="loan">
+                                            <input type="date" name="date" t-att-value="loan.payment_start_date"
+                                                   id="date"
+                                                   class="form-control" placeholder="Date"/>
+                                        </t>
+                                    </t>
+                                    <t t-elif="data">
+                                        <input type="date" name="payment_start_date" t-att-value="payment_start_date"
+                                               id="employee_id"
+                                               class="form-control" placeholder="Payment Start Date"
+                                               required="required"/>
+                                    </t>
+                                    <t t-else="">
+                                        <input type="date" name="payment_start_date" t-att-value="payment_start_date"
+                                               id="employee_id"
+                                               class="form-control" placeholder="Payment Start Date"
+                                               required="required"/>
+                                    </t>
+                                </div>
+                                <div class="form-group">
+                                    <label for="date" class="control-label">Date</label>
+                                    <t t-if="loans">
+                                        <t t-foreach="loans" t-as="loan">
+                                            <input type="date" name="date" t-att-value="loan.date" id="date"
+                                                   class="form-control" placeholder="Date" readonly="readonly"/>
+                                        </t>
+                                    </t>
+                                    <t t-elif="data">
+                                        <input type="date" name="date" t-att-value="date" id="date"
+                                               class="form-control" placeholder="Date" required="required"/>
+                                    </t>
+                                    <t t-else="">
+                                        <input type="date" name="date" t-att-value="date" id="date"
+                                               class="form-control" placeholder="Date" required="required"/>
+                                    </t>
+                                </div>
+                                <div class="form-group">
+                                    <label for="job_position_id" class="control-label">Job Position</label>
+                                    <select name="job_position_id" class="form-control link-style" id="employee_job">
+                                        <t t-if="loans">
+                                            <t t-foreach="loans" t-as="loan">
+                                                <option selected="selected" t-esc="loan.job_position_id.name"
+                                                        t-att-value="loan.id" readonly="readonly"/>
+                                            </t>
+                                        </t>
+                                        <t t-elif="data">
+                                            <option selected="selected" t-esc="data.job_id.name"
+                                                    t-att-value="data.job_id.id"/>
+                                        </t>
+                                        <t t-else="">
+                                            <t t-foreach="job_rec" t-as="job">
+                                                <option t-esc="job.name" t-att-value="job.id"/>
+                                            </t>
+                                        </t>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="no_of_installment" class="control-label">No.Of Installment</label>
+                                    <t t-if="loans">
+                                        <t t-foreach="loans" t-as="loan">
+                                            <input type="text" name="no_of_installment"
+                                                   t-att-value="loan.no_of_installment"
+                                                   id="no_of_installment"
+                                                   class="form-control" placeholder="No.of Installment"
+                                            />
+                                        </t>
+                                    </t>
+                                    <t t-elif="data">
+                                        <input type="text" name="no_of_installment" t-att-value="no_of_installment"
+                                               id="no_of_installment"
+                                               class="form-control" placeholder="No.of Installment"
+                                               required="required"/>
+                                    </t>
+                                    <t t-else="">
+                                        <input type="text" name="no_of_installment" t-att-value="no_of_installment"
+                                               id="no_of_installment"
+                                               class="form-control" placeholder="No.of Installment"
+                                               required="required"/>
+                                    </t>
+                                </div>
+                                <div class="form-group">
+                                    <label for="company_id" class="control-label">Company</label>
+                                    <select name="company_id" class="form-control link-style">
+                                        <t t-if="loans">
+                                            <t t-foreach="loans" t-as="loan">
+                                                <option selected="selected" t-esc="loan.company_id.name"
+                                                        t-att-value="loan.id" readonly="readonly"/>
+                                            </t>
+                                        </t>
+                                        <t t-elif="data">
+                                            <t t-foreach="company_rec" t-as="company">
+                                                <option t-esc="company.name" t-att-value="company.id"/>
+                                            </t>
+                                        </t>
+                                        <t t-else="">
+                                            <t t-foreach="company_rec" t-as="company">
+                                                <option t-esc="company.name" t-att-value="company.id"/>
+                                            </t>
+                                        </t>
+                                    </select>
+                                </div>
+                                <script>
+                                    function onchange_employee_fields(){
+                                    var emp_name_list = document.getElementById("emp_name_list");
+                                    var value = emp_name_list.options[emp_name_list.selectedIndex].value;
+                                    $.ajax({url: "/loan_webform/ajax/work",
+                                    data: {'emp_name_list':value},
+                                    success: function(results){
+                                    var new_result = JSON.parse(results);
+                                    console.log(new_result,'ddd')
+                                    var emp_new = new_result['employee']
+                                    var emp_list = new_result['employee']
+                                    var emp_job = new_result['job']
+                                    var selectList = document.getElementById("employee_department");
+                                    selectList.options.length = 0;
+                                    var option = document.createElement("option");
+                                    for (var i = 0; i &lt; emp_list.length; i++) {
+                                    var option = document.createElement("option");
+                                    option.value = emp_list[i].id;
+                                    option.text = emp_list[i].department_id;
+                                    selectList.appendChild(option);
+                                    }
+                                    var selectJob = document.getElementById("employee_job");
+                                    selectJob.options.length = 0;
+                                    for (var i = 0; i &lt; emp_job.length; i++) {
+                                    var option = document.createElement("option");
+                                    option.value = emp_job[i].id;
+                                    option.text = emp_job[i].job_id;
+                                    selectJob.appendChild(option);
+                                    }
+                                    }
+                                    });
+                                    }
+                                    function onchange_loan_amount(){
+                                    var emp_loan_amount = document.getElementById("loan_amount");
+                                    var value = emp_loan_amount.value;
+                                    console.log(emp_loan_amount,value)
+                                    console.log(value,'value')
+                                    $.ajax({url: "/loan_request/amount",
+                                    success: function(results){
+                                    var new_result = JSON.parse(results);
+                                    console.log(new_result,'limit')
+                                    var amount = parseFloat(value);
+                                    if (amount > new_result) {
+                                    alert("Hello! You exceed the loan limit!");
+                                    }
+                                    }
+                                    });
+                                    }
+                                </script>
+                                <div class="form-group">
+                                    <t t-if="loans">
+                                        <button type="submit" class="btn btn-primary pull-right">Create Loan</button>
+                                        <a t-attf-href="/loan_webform" class="btn btn-secondary pull-right"
+                                           style="margin-right: 10px;">Discard
+                                        </a>
+                                    </t>
+                                    <t t-elif="data">
+                                        <button type="submit" class="btn btn-primary pull-right">Create Loan</button>
+                                        <a t-attf-href="/loan_request" class="btn btn-secondary pull-right"
+                                           style="margin-right: 10px;">Discard
+                                        </a>
+                                    </t>
+                                    <t t-else="">
+                                        <button type="submit" class="btn btn-primary pull-right">Create Loan</button>
+                                        <a t-attf-href="/loan_webform" class="btn btn-secondary pull-right"
+                                           style="margin-right: 10px;">Discard
+                                        </a>
+                                    </t>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+    </data>
+    <record id="loan_create_thanks" model="website.page">
+        <field name="name">Name</field>
+        <field name="type">qweb</field>
+        <field name="url">/loan_thank_you</field>
+        <field name="website_published">True</field>
+        <field name="key">employee_loan.loan_create_thanks</field>
+        <field name="arch" type="xml">
+            <t name="Debug" t-name="website.tree_view_loan_web">
+                <t t-call="website.layout">
+                    <div id="wrap">
+                        <div class="container">
+                            <h1>Thanks!</h1>
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <div class="alert alert-success" role="status">
+                                        The Loan has been Submitted successfully
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </field>
+    </record>
+</odoo>
+
+
+
+
+
+

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <record id="view_project_create_tree" model="ir.ui.view">
+            <field name="name">project.create.tree</field>
+            <field name="model">project.create</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="department_id"/>
+                    <field name="company_id"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+    <record id="view_practice_form" model="ir.ui.view">
+        <field name="name">project.create.form</field>
+        <field name="model">project.create</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_highlight">
+                        <group>
+                            <group>
+                                <h1>
+                                    <field name="reference_no"/>
+                                </h1>
+                            </group>
+                        </group>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="department_id"/>
+                        </group>
+                        <group>
+                            <field name="date"/>
+                            <field name="company_id"/>
+                        </group>
+                    </group>
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <!--    <record id="loan_view_loan_approval_kanban_test" model="ir.ui.view">-->
+    <!--        <field name="name">loan.approval.kanban</field>-->
+    <!--        <field name="model">loan.approval</field>-->
+    <!--        <field name="field_parent">child_id</field>-->
+    <!--        <field name="arch" type="xml">-->
+    <!--            <kanban records_draggable="1">-->
+    <!--                <field name="employee_id"/>-->
+    <!--                <field name="state" widget="statinfo"/>-->
+    <!--                <templates>-->
+    <!--                    <t t-name="kanban-box">-->
+    <!--                        <div t-attf-class="oe_kanban_global_click">-->
+    <!--                            <div>-->
+    <!--                                <div class="float-left">-->
+    <!--                                    <strong>-->
+    <!--                                        <field name="reference_no"/>-->
+    <!--                                    </strong>-->
+    <!--                                    <div>-->
+    <!--                                        <field name="employee_id"/>-->
+    <!--                                    </div>-->
+    <!--                                    <field name="activity_ids" widget="kanban_activity"/>-->
+    <!--                                </div>-->
+    <!--                            </div>-->
+    <!--                        </div>-->
+    <!--                    </t>-->
+    <!--                </templates>-->
+    <!--            </kanban>-->
+    <!--        </field>-->
+    <!--    </record>-->
+    <record id="action_project_create" model="ir.actions.act_window">
+        <field name="name">project create</field>
+        <field name="res_model">project.create</field>
+        <field name="view_mode">list,form,kanban</field>
+        <field name="context">{'group_by':'state'}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first Loan
+            </p>
+        </field>
+    </record>
+    <menuitem id="menu_student"
+              name="Student"
+              action="action_project_create"
+              parent="student_management"
+              sequence="1"/>
+</odoo>
+

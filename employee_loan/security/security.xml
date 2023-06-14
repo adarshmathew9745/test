@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="group_hr_user_low" model="res.groups">
+        <field name="name">User</field>
+        <field name="category_id" ref="base.module_category_human_resources_employees"/>
+    </record>
+
+     <record id="hr.group_hr_user" model="res.groups">
+        <field name="implied_ids"
+               eval="[(6, 0, [ref('employee_loan.group_hr_user_low')])]"/>
+    </record>
+
+     <record id="hr.group_hr_manager" model="res.groups">
+        <field name="implied_ids" eval="[(4, ref('employee_loan.group_hr_user_low'))]"/>
+    </record>
+<!--        <record id="loan_approval_users" model="ir.rule">-->
+<!--        <field name="name">Loan Approvals Users</field>-->
+<!--        <field name="model_id" ref="employee_loan.model_loan_approval"/>-->
+<!--        <field name="domain_force">[('create_uid','=',user.id)]</field>-->
+<!--        <field name="groups" eval="[(4, ref('employee_loan.group_hr_user_low'))]"/>-->
+<!--        <field name="perm_read" eval="True"/>-->
+<!--        <field name="perm_write" eval="True"/>-->
+<!--        <field name="perm_create" eval="True"/>-->
+<!--        <field name="perm_unlink" eval="True"/>-->
+<!--    </record>-->
+    <record id="loan_approval_manager_officer" model="ir.rule">
+        <field name="name">Loan Approvals Officer And Admin</field>
+        <field name="model_id" ref="employee_loan.model_loan_approval"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('hr.group_hr_manager')),(4, ref('hr.group_hr_user'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+</odoo>
+

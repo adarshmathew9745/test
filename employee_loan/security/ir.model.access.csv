@@ -1,0 +1,6 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+"access_loan_approval","access.loan.approval","model_loan_approval","group_hr_user_low",1,1,1,1
+"access_loan_approval_portal","access.loan.approval.portal","model_loan_approval","base.group_portal",1,1,1,1
+"access_loan_approval_portal_user","access.loan.approval.portal.user","hr.model_hr_employee_public","base.group_portal",1,1,1,1
+"access_loan_approval_portal_res_partner","access.loan.approval.portal.res.partner","base.model_res_partner","base.group_portal",1,1,1,1
+"access_loan_installment_lines","access.loan.installment.lines","model_loan_installment_lines","",1,1,1,0

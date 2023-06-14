@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="res_config_settings_view_form" model="ir.ui.view">
+            <field name="name">res.config.settings.view.form.inherit.employee</field>
+            <field name="model">res.config.settings</field>
+            <field name="priority" eval="70"/>
+            <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[hasclass('settings')]" position="inside">
+                    <div class="app_settings_block" groups="hr.group_hr_manager">
+                        <h2>Employee Loan</h2>
+                        <div class="row mt16 o_settings_container" name="employee_loan_maximum_limit">
+                            <div class="col-12 col-lg-6 o_setting_box" title="employees maximum loan limit.">
+                                <div class="o_setting_right_pane">
+                                    <label for="loan_limit"/>
+                                </div>
+                                <div class="o_setting_right_pane">
+                                    <field name="loan_limit" widget="monetary"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+        <record id="loan_config_settings_action" model="ir.actions.act_window">
+            <field name="name">Loan</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.config.settings</field>
+            <field name="view_mode">form</field>
+            <field name="target">inline</field>
+            <field name="context">{'module' : 'hr', 'bin_size': False}</field>
+        </record>
+        <menuitem id="loan_config_settings_menu"
+                  name="Settings"
+                  parent="hr.menu_human_resources_configuration"
+                  sequence="0"
+                  action="loan_config_settings_action"
+                  groups="base.group_system"
+        />
+
+    </data>
+</odoo>

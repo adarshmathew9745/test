@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <template id="portal_my_home" inherit_id="portal.portal_my_home">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="title">Loan</t>
+                <t t-set="url" t-value="'/my/loan'"/>
+                <t t-set="placeholder_count" t-value="'loan_counters'"/>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="portal_breadcrumbs_group" inherit_id="portal.portal_breadcrumbs">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'loan_list_view'"
+                class="breadcrumb-item">Loans
+            </li>
+            <li t-if="page_name == 'loan_form_view'"
+                class="breadcrumb-item">Loan_Data
+            </li>
+        </xpath>
+    </template>
+
+    <template id="loan_list_view">
+        <t t-call="portal.portal_layout">
+            <t t-call="portal.portal_table">
+                <thead>
+                    <div class="clearfix oe_login_buttons">
+                        <a t-attf-href="/loan_request" class="btn btn-primary pull-left">Loan Request</a>
+                    </div>
+                    <tr class="active">
+                        <th class="text-centre">Loan Name</th>
+                        <th class="text-centre">Employee</th>
+                        <th class="text-centre">Loan Amount</th>
+                        <th class="text-centre">Date</th>
+                        <th class="text-centre">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="loans" t-as="loan">
+                        <tr>
+                            <td class="text-centre">
+                                <a t-attf-href="/my/loan/#{loan.id}">
+                                    <t t-out="loan.reference_no"/>
+                                </a>
+                            </td>
+                            <td class="text-centre">
+                                <t t-out="loan.employee_id.name"/>
+                            </td>
+                            <td class="text-centre">
+                                <t t-out="loan.loan_amount"/>
+                            </td>
+                            <td class="text-centre">
+                                <t t-out="loan.date"/>
+                            </td>
+                            <td class="text-centre">
+                                <t t-out="loan.state" widget="badge"/>
+                            </td>
+                        </tr>
+                    </t>
+                </tbody>
+            </t>
+        </t>
+    </template>
+</odoo>

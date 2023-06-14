@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_loan_approval_form" model="ir.ui.view">
+        <field name="name">loan.approval.tree</field>
+        <field name="model">loan.approval</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="employee_id"/>
+                <field name="department_id"/>
+                <field name="loan_amount"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_practice_form" model="ir.ui.view">
+        <field name="name">loan.approval.form</field>
+        <field name="model">loan.approval</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="compute_installment" string="Compute Installment"
+                            type="object" class="oe_highlight" data-hotkey="w" states="draft"/>
+                    <button name="state_submitted" string="Submit"
+                            type="object" class="oe_highlight" data-hotkey="w" states="draft"/>
+                    <button name="approve_loan" string="Approve"
+                            type="object" class="oe_highlight" data-hotkey="w" groups="hr.group_hr_manager"
+                            attrs="{'invisible': ['|',('active', '=', True),('state','!=','submitted')]}"/>
+                    <button name="refuse_loan" string="Refuse"
+                            type="object" class="oe_highlight" data-hotkey="w" groups="hr.group_hr_manager"
+                            attrs="{'invisible': ['|',('active', '=', True),('state','!=','submitted')]}"/>
+                    <button name="cancel_loan" string="Cancel"
+                            type="object" class="oe_highlight" data-hotkey="w" states="draft,submitted"/>
+                    <button name="set_to_draft" string="Set To Draft"
+                            type="object" class="oe_highlight" data-hotkey="w" states="cancel"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_highlight">
+                        <group>
+                            <group>
+                                <h1>
+                                    <field name="reference_no"/>
+                                </h1>
+                            </group>
+                        </group>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="reference_no" invisible="1"/>
+                            <field name="employee_id"/>
+                            <field name="department_id"/>
+                            <field name="loan_amount"/>
+                            <field name="payment_start_date"/>
+                            <field name="company_currency_id"/>
+                        </group>
+                        <group>
+                            <field name="date"/>
+                            <field name="job_position_id"/>
+                            <field name="no_of_installment"/>
+                            <field name="company_id"/>
+                            <field name="active" invisible='1'/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="installments" string="Installments">
+                            <field name="installment_line_ids">
+                                <tree editable="bottom">
+                                    <field name="parent_id" invisible="1"/>
+                                    <field name="date"/>
+                                    <field name="loan_amount"/>
+                                </tree>
+                                <form>
+                                    <group>
+                                        <field name="parent_id" invisible="1"/>
+                                        <field name="date"/>
+                                        <field name="loan_amount"/>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="loan_view_loan_approval_kanban_test" model="ir.ui.view">
+        <field name="name">loan.approval.kanban</field>
+        <field name="model">loan.approval</field>
+        <field name="field_parent">child_id</field>
+        <field name="arch" type="xml">
+            <kanban records_draggable="1">
+                <field name="employee_id"/>
+                <field name="state" widget="statinfo"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click">
+                            <div>
+                                <div class="float-left">
+                                    <strong>
+                                        <field name="reference_no"/>
+                                    </strong>
+                                    <div>
+                                        <field name="employee_id"/>
+                                    </div>
+                                    <field name="activity_ids" widget="kanban_activity"/>
+                                </div>
+                                <div class="float-right">
+                                    <field name="state" widget="badge" decoration-info="state == 'draft'"
+                                           decoration-muted="state == 'cancel'" decoration-success="state == 'approve'"
+                                           decoration-danger="state == 'refuse'"
+                                           decoration-warning="state == 'submitted'"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+    <record id="action_loan_approval" model="ir.actions.act_window">
+        <field name="name">Loan Approval</field>
+        <field name="res_model">loan.approval</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="context">{'group_by':'state'}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first Loan
+            </p>
+        </field>
+    </record>
+    <menuitem id="menu_loan"
+              name="Loan"
+              action="action_loan_approval"
+              parent="hr.menu_hr_employee_payroll"
+              sequence="0"/>
+</odoo>
