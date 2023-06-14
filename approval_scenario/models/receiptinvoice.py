@@ -43,7 +43,7 @@ class SaleOrderInherit(models.Model):
     testbool = fields.Boolean(string='test', compute='compute_pending_approval', readonly=False)
     test_bool_second = fields.Boolean(string='test approve', compute='compute_approve_reject', readonly=False)
     button_second = fields.Boolean(string='button', compute='compute_button', readonly=True)
-
+    button_third = fields.Boolean(string='button', readonly=True)
 
     def write(self, vals):
         res = super(SaleOrderInherit, self).write(vals)
